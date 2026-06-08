@@ -8,6 +8,7 @@ from __future__ import annotations
 
 from datetime import datetime, timedelta, timezone
 from email.utils import parsedate_to_datetime
+import hashlib
 from html import unescape
 import re
 from typing import Any, Iterable
@@ -53,6 +54,18 @@ def canonical_url(value: str) -> str:
         return value
 
 
+def mention_id(brand: str, link: str, title: str) -> str:
+    """Create a stable identifier used by persistent archives."""
+    raw = f"{brand.casefold()}|{canonical_url(link)}|{title.casefold()}"
+    return hashlib.sha256(raw.encode("utf-8")).hexdigest()
+
+
+def brand_is_relevant(brand: str, text: str) -> bool:
+    """Require the complete brand phrase rather than loose substring matches."""
+    phrase = re.escape(brand.strip())
+    return bool(re.search(rf"(?<!\w){phrase}(?!\w)", text, flags=re.IGNORECASE))
+
+
 def parse_datetime(entry: dict[str, Any]) -> datetime:
     """Return a timezone-aware UTC datetime for a feed entry."""
     struct_time = entry.get("published_parsed") or entry.get("updated_parsed")
@@ -95,7 +108,9 @@ def entry_to_mention(
 
     summary = clean_text(entry.get("summary") or entry.get("description"))
     sentiment, score = sentiment_for(f"{title}. {summary[:500]}")
+    collected_at = datetime.now(timezone.utc)
     return {
+        "id": mention_id(brand, link, title),
         "brand": brand,
         "source": source,
         "publisher": publisher,
@@ -106,6 +121,7 @@ def entry_to_mention(
         "published_at": parse_datetime(entry),
         "sentiment": sentiment,
         "sentiment_score": score,
+        "collected_at": collected_at,
     }
 
 
@@ -129,12 +145,11 @@ def fetch_feed(
             raise ValueError(clean_text(parsed.bozo_exception))
 
         mentions: list[dict[str, Any]] = []
-        needle = brand.casefold()
         for entry in parsed.entries[:100]:
             searchable = clean_text(
                 f"{entry.get('title', '')} {entry.get('summary', '')}"
-            ).casefold()
-            if require_match and needle not in searchable:
+            )
+            if require_match and not brand_is_relevant(brand, searchable):
                 continue
             mention = entry_to_mention(
                 entry,
@@ -156,6 +171,7 @@ def fetch_google_news(brand: str) -> tuple[list[dict[str, Any]], str | None]:
         brand=brand,
         source="Google News",
         publisher="Google News",
+        require_match=True,
     )
 
 
@@ -166,6 +182,7 @@ def fetch_reddit(brand: str) -> tuple[list[dict[str, Any]], str | None]:
         brand=brand,
         source="Reddit",
         publisher="Reddit",
+        require_match=True,
     )
 
 
@@ -176,6 +193,7 @@ def fetch_wordpress(brand: str) -> tuple[list[dict[str, Any]], str | None]:
         brand=brand,
         source="Blogs",
         publisher="WordPress",
+        require_match=True,
     )
 
 
@@ -238,6 +256,11 @@ def fetch_youtube(
                 published_at = datetime.now(timezone.utc)
             mentions.append(
                 {
+                    "id": mention_id(
+                        brand,
+                        f"https://www.youtube.com/watch?v={video_id}",
+                        title,
+                    ),
                     "brand": brand,
                     "source": "YouTube",
                     "publisher": clean_text(snippet.get("channelTitle") or "YouTube"),
@@ -248,6 +271,7 @@ def fetch_youtube(
                     "published_at": published_at.astimezone(timezone.utc),
                     "sentiment": sentiment,
                     "sentiment_score": score,
+                    "collected_at": datetime.now(timezone.utc),
                 }
             )
         return mentions, None

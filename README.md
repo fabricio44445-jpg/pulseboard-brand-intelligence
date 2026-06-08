@@ -55,9 +55,33 @@ The dependency set supports Streamlit Community Cloud's Python 3.14 runtime.
 ## Storage note
 
 Streamlit Community Cloud does not provide durable local application storage.
-This version fetches live data and uses a 15-minute cache. If historical data
-must survive app restarts, connect PostgreSQL, Supabase, or another external
-database rather than relying on a local CSV or SQLite file.
+Without Supabase, Pulseboard fetches live data and uses a 15-minute cache plus
+temporary session history. The interface labels this clearly as **Live-feed
+mode**.
+
+### Enable accumulated 30-day history
+
+1. Create a Supabase project.
+2. Open **SQL Editor** and run `supabase_schema.sql`.
+3. Copy the project URL and service-role key.
+4. Add these values to Streamlit **App settings → Secrets**:
+
+   ```toml
+   SUPABASE_URL = "https://your-project.supabase.co"
+   SUPABASE_SERVICE_ROLE_KEY = "your-service-role-key"
+   ```
+
+5. In the GitHub repository, open **Settings → Secrets and variables →
+   Actions** and create secrets with the same names.
+6. Optionally add `YOUTUBE_API_KEY` in both Streamlit and GitHub Actions.
+7. Run **Actions → Collect brand mentions → Run workflow** once.
+
+The included GitHub Actions workflow runs every six hours, upserts mentions by
+stable ID, and deletes rows older than 30 days. This continues collecting even
+when the Streamlit app is asleep.
+
+The service-role key must remain secret. It is only used by the server-side app
+and GitHub Actions and must never be committed or exposed in browser code.
 
 ## Responsible collection
 
