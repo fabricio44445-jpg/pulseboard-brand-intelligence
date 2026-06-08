@@ -50,6 +50,7 @@ commit the real secrets file.
 6. Deploy.
 
 `requirements.txt` and `.streamlit/config.toml` are already configured.
+The dependency set supports Streamlit Community Cloud's Python 3.14 runtime.
 
 ## Storage note
 

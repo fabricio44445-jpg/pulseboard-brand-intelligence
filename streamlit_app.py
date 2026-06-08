@@ -240,7 +240,7 @@ def render_overview(rows: list[dict], target: str, competitor: str | None) -> No
         with chart_col:
             st.markdown('<div class="eyebrow">Conversation activity</div>', unsafe_allow_html=True)
             st.subheader("Mention volume")
-            st.altair_chart(chart, use_container_width=True)
+            st.altair_chart(chart, width="stretch")
         with sentiment_col:
             st.markdown('<div class="eyebrow">Audience response</div>', unsafe_allow_html=True)
             st.subheader("Sentiment")
@@ -267,7 +267,7 @@ def render_overview(rows: list[dict], target: str, competitor: str | None) -> No
                 )
                 .properties(height=310)
             )
-            st.altair_chart(donut, use_container_width=True)
+            st.altair_chart(donut, width="stretch")
 
     topics = topic_counts(target_rows, target)
     top_topic = topics[0][0].title() if topics else "general coverage"
@@ -305,7 +305,7 @@ def render_overview(rows: list[dict], target: str, competitor: str | None) -> No
                 )
                 .properties(height=300)
             )
-            st.altair_chart(bars, use_container_width=True)
+            st.altair_chart(bars, width="stretch")
         else:
             st.info("Not enough text to identify topics.")
     with attention_col:
@@ -386,10 +386,10 @@ def render_analytics(rows: list[dict], target: str) -> None:
     first, second = st.columns(2)
     with first:
         st.subheader("Mentions by source")
-        st.altair_chart(source_chart, use_container_width=True)
+        st.altair_chart(source_chart, width="stretch")
     with second:
         st.subheader("Sentiment by source")
-        st.altair_chart(sentiment_chart, use_container_width=True)
+        st.altair_chart(sentiment_chart, width="stretch")
 
 
 def render_source_health(statuses: list[dict]) -> None:
