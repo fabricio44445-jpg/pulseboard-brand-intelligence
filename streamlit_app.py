@@ -51,7 +51,9 @@ def load_mentions(
     brands: tuple[str, ...],
     sources: tuple[str, ...],
     youtube_api_key: str | None,
+    schema_version: int = 2,
 ) -> tuple[list[dict], list[dict]]:
+    del schema_version
     return collect_mentions(list(brands), list(sources), youtube_api_key)
 
 
@@ -647,6 +649,7 @@ with st.spinner("Collecting live mentions…"):
         tuple(brands_to_fetch),
         tuple(selected_sources),
         secret("YOUTUBE_API_KEY"),
+        2,
     )
 
 supabase_url = secret("SUPABASE_URL")
@@ -705,7 +708,10 @@ filtered = [
 ]
 
 latest_collection = max(
-    (row["collected_at"] for row in live_mentions),
+    (
+        row.get("collected_at", row.get("published_at", datetime.now(timezone.utc)))
+        for row in live_mentions
+    ),
     default=datetime.now(timezone.utc),
 )
 history_badge = (

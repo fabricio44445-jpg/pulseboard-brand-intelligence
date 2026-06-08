@@ -27,6 +27,7 @@ def _headers(key: str, *, prefer: str | None = None) -> dict[str, str]:
 
 
 def _serialize(row: dict[str, Any]) -> dict[str, Any]:
+    collected_at = row.get("collected_at", row["published_at"])
     return {
         "id": row["id"],
         "brand": row["brand"],
@@ -39,7 +40,7 @@ def _serialize(row: dict[str, Any]) -> dict[str, Any]:
         "published_at": row["published_at"].astimezone(timezone.utc).isoformat(),
         "sentiment": row["sentiment"],
         "sentiment_score": row["sentiment_score"],
-        "collected_at": row["collected_at"].astimezone(timezone.utc).isoformat(),
+        "collected_at": collected_at.astimezone(timezone.utc).isoformat(),
     }
 
 
