@@ -757,13 +757,13 @@ with freshness_col:
     if history_enabled:
         st.success(
             "Accumulation is active. New mentions are deduplicated and retained for 30 days.",
-            icon="✓",
+            icon=":material/check_circle:",
         )
     else:
         st.warning(
             "Current feeds are live, but history is only retained for this session. "
             "Configure Supabase to accumulate a full month.",
-            icon="!",
+            icon=":material/warning:",
         )
 
 overview_tab, mentions_tab, analytics_tab, health_tab = st.tabs(
