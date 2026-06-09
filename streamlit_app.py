@@ -66,21 +66,21 @@ def inject_styles() -> None:
         """
         <style>
         :root {
-          --ink:#101b2b; --muted:#536273; --line:#cbd5df;
-          --primary:#075e54; --primary-dark:#06483f; --soft:#dceeea;
+          --ink:#111d31; --muted:#566477; --line:#c9d1dc;
+          --primary:#173b67; --primary-dark:#102b4d; --soft:#dce6f2;
           --positive:#087a55; --negative:#b42338; --warning:#9a5b00;
-          --canvas:#e9eef3; --surface:#f9fbfc; --nav:#0b2733;
+          --canvas:#e9edf2; --surface:#fafbfc; --nav:#0b1f38;
         }
         .stApp { background:var(--canvas); color:var(--ink); }
-        [data-testid="stHeader"] { background:rgba(233,238,243,.94); }
-        [data-testid="stSidebar"] { background:var(--nav); border-right:1px solid #244452; }
+        [data-testid="stHeader"] { background:rgba(233,237,242,.96); }
+        [data-testid="stSidebar"] { background:var(--nav); border-right:1px solid #243a57; }
         [data-testid="stSidebar"] * { color:#eef6f7; }
         [data-testid="stSidebar"] .stButton button {
-          background:#0e766a; color:#fff; border:1px solid #38a89b; font-weight:800;
+          background:#244f80; color:#fff; border:1px solid #527aa7; font-weight:800;
           min-height:2.8rem;
         }
         [data-testid="stSidebar"] .stButton button:hover {
-          background:#119184; border-color:#69cbbf;
+          background:#2f6098; border-color:#789bc0;
         }
         [data-testid="stSidebar"] [data-testid="stWidgetLabel"] p {
           color:#d9e8eb; font-size:.8rem; font-weight:800;
@@ -88,61 +88,61 @@ def inject_styles() -> None:
         [data-testid="stSidebar"] [data-baseweb="select"] > div,
         [data-testid="stSidebar"] [data-baseweb="input"] > div,
         [data-testid="stSidebar"] input {
-          background:#f7fafb !important; color:#10212b !important;
-          border-color:#9db0bb !important;
+          background:#f8fafc !important; color:#12233a !important;
+          border-color:#91a0b2 !important;
         }
         [data-testid="stSidebar"] [data-baseweb="select"] > div *,
         [data-testid="stSidebar"] [data-baseweb="input"] > div *,
         [data-testid="stSidebar"] input,
         [data-testid="stSidebar"] [role="combobox"] {
-          color:#10212b !important;
-          -webkit-text-fill-color:#10212b !important;
+          color:#12233a !important;
+          -webkit-text-fill-color:#12233a !important;
           opacity:1 !important;
         }
         [data-testid="stSidebar"] input::placeholder { color:#667885 !important; opacity:1; }
         [data-testid="stSidebar"] [data-baseweb="tag"] {
-          background:#dceeea !important; border:1px solid #8dbbb4 !important;
+          background:#dce7f3 !important; border:1px solid #8ba5c2 !important;
         }
-        [data-testid="stSidebar"] [data-baseweb="tag"] * { color:#084d45 !important; }
-        [data-testid="stSidebar"] svg { fill:#16333d; }
+        [data-testid="stSidebar"] [data-baseweb="tag"] * { color:#173b67 !important; }
+        [data-testid="stSidebar"] svg { fill:#1b3657; }
         [data-baseweb="popover"] [role="option"],
         [data-baseweb="popover"] li {
-          background:#f9fbfc !important; color:#10212b !important;
-          -webkit-text-fill-color:#10212b !important;
+          background:#fafbfc !important; color:#12233a !important;
+          -webkit-text-fill-color:#12233a !important;
         }
         [data-baseweb="popover"] [aria-selected="true"] {
-          background:#d5ebe7 !important; color:#064e46 !important;
+          background:#dce7f3 !important; color:#173b67 !important;
         }
-        [data-testid="stSidebar"] hr { border-color:#31515e; }
+        [data-testid="stSidebar"] hr { border-color:#334964; }
         [data-testid="stSidebar"] small,
         [data-testid="stSidebar"] [data-testid="stCaptionContainer"] p {
           color:#bed0d5 !important;
         }
-        .block-container { max-width:1500px; padding-top:1.25rem; }
+        .block-container { max-width:1500px; padding-top:4.25rem; }
         h1,h2,h3 { letter-spacing:-.025em; }
         h1 { font-size:2rem !important; }
         .hero {
-          background:linear-gradient(115deg,#082b37 0%,#075e54 68%,#0d7668 100%);
-          border:1px solid #2d8176; border-radius:18px; padding:1.35rem 1.55rem;
-          box-shadow:0 16px 45px rgba(10,34,45,.18); margin-bottom:1rem;
+          background:linear-gradient(115deg,#0a1f38 0%,#173b67 68%,#285582 100%);
+          border:1px solid #496d96; border-radius:18px; padding:1.35rem 1.55rem;
+          box-shadow:0 16px 45px rgba(15,35,61,.2); margin-bottom:1rem;
         }
         .hero .kicker {
-          color:#9fe1d4; font-size:.72rem; font-weight:900; letter-spacing:.14em;
+          color:#b8d3f1; font-size:.72rem; font-weight:900; letter-spacing:.14em;
           text-transform:uppercase;
         }
         .hero h1 { color:#fff !important; margin:.25rem 0 .35rem; }
-        .hero p { color:#d2e7e4; margin:0; font-size:.9rem; }
+        .hero p { color:#d8e3f0; margin:0; font-size:.9rem; }
         .mode-row { display:flex; gap:.45rem; flex-wrap:wrap; margin-top:.85rem; }
         .mode-badge {
           display:inline-flex; align-items:center; gap:.35rem; border-radius:999px;
           padding:.28rem .62rem; background:rgba(255,255,255,.1); color:#fff;
           border:1px solid rgba(255,255,255,.22); font-size:.7rem; font-weight:800;
         }
-        .mode-badge.history { background:#d8f5e9; color:#07563e; border-color:#7bc9ae; }
+        .mode-badge.history { background:#dce9f7; color:#173b67; border-color:#88a8ca; }
         .retention-note {
           min-height:2.65rem; display:flex; align-items:center; padding:.65rem .8rem;
-          border:1px solid #92bdb5; border-radius:.65rem; background:#e2f1ee;
-          color:#074c45; font-size:.78rem; font-weight:700;
+          border:1px solid #9aafc7; border-radius:.65rem; background:#e4ebf3;
+          color:#173653; font-size:.78rem; font-weight:700;
         }
         .eyebrow {
           color:var(--primary); font-size:.7rem; font-weight:800;
@@ -170,13 +170,13 @@ def inject_styles() -> None:
           padding:1.2rem; box-shadow:0 10px 35px rgba(26,48,45,.05);
         }
         .briefing {
-          background:linear-gradient(120deg,#143a35,#102d2a 70%,#1c4640);
+          background:linear-gradient(120deg,#142c4c,#0e223d 70%,#1d426c);
           border-radius:14px; padding:1.35rem 1.5rem; color:white; margin:.35rem 0 1rem;
         }
-        .briefing .eyebrow { color:#a9c8c2; }
+        .briefing .eyebrow { color:#b4cce7; }
         .briefing h3 { color:white; margin:.15rem 0 .45rem; }
-        .briefing p { color:#bfd0cd; line-height:1.65; }
-        .briefing strong { color:#c9f26b; }
+        .briefing p { color:#c8d6e6; line-height:1.65; }
+        .briefing strong { color:#a8cef6; }
         .mention-card {
           background:var(--surface); border:1px solid var(--line); border-radius:12px;
           padding:1rem 1.1rem; margin-bottom:.7rem;
@@ -203,7 +203,7 @@ def inject_styles() -> None:
           padding:.55rem 1rem;
         }
         .stTabs [aria-selected="true"] {
-          background:#cfe8e3 !important; color:#064e46 !important; border-color:#5b9d93;
+          background:#dce7f3 !important; color:#173b67 !important; border-color:#7899bc;
         }
         div[data-baseweb="select"] > div,
         div[data-baseweb="input"] > div,
@@ -215,12 +215,12 @@ def inject_styles() -> None:
           border-color:#8fa2af !important; color:#102d39 !important; font-weight:800 !important;
         }
         .stButton button:hover, .stDownloadButton button:hover, .stLinkButton a:hover {
-          border-color:#075e54 !important; color:#064e46 !important; background:#e0efec !important;
+          border-color:#173b67 !important; color:#173b67 !important; background:#e1e9f2 !important;
         }
         [data-testid="stAlert"] { border:1px solid #aebdc7; }
         a { color:var(--primary) !important; }
         @media (max-width:700px) {
-          .block-container { padding:1.5rem .8rem; }
+          .block-container { padding:4rem .8rem 1.5rem; }
           h1 { font-size:1.65rem !important; }
         }
         </style>
@@ -424,7 +424,7 @@ def render_overview(rows: list[dict], target: str, competitor: str | None) -> No
                 y=alt.Y("mentions:Q", title="Mentions", scale=alt.Scale(zero=True)),
                 color=alt.Color(
                     "brand:N",
-                    scale=alt.Scale(range=["#136f63", "#b4c1bf", "#6757d9"]),
+                    scale=alt.Scale(range=["#173b67", "#8995a5", "#55749a"]),
                     legend=alt.Legend(title=None, orient="top"),
                 ),
                 tooltip=["brand:N", alt.Tooltip("date:T", format="%b %d"), "mentions:Q"],
@@ -484,25 +484,7 @@ def render_overview(rows: list[dict], target: str, competitor: str | None) -> No
         unsafe_allow_html=True,
     )
 
-    topic_col, attention_col = st.columns([1, 1.7])
-    with topic_col:
-        st.markdown('<div class="eyebrow">Conversation drivers</div>', unsafe_allow_html=True)
-        st.subheader("Trending terms")
-        if topics:
-            topic_frame = pd.DataFrame(topics, columns=["topic", "mentions"])
-            bars = (
-                alt.Chart(topic_frame)
-                .mark_bar(color="#136f63", cornerRadiusEnd=4)
-                .encode(
-                    x=alt.X("mentions:Q", title=None),
-                    y=alt.Y("topic:N", sort="-x", title=None),
-                    tooltip=["topic:N", "mentions:Q"],
-                )
-                .properties(height=300)
-            )
-            st.altair_chart(bars, width="stretch")
-        else:
-            st.info("Not enough text to identify topics.")
+    attention_col, topic_col = st.columns([1.7, 1])
     with attention_col:
         st.markdown('<div class="eyebrow">Latest activity</div>', unsafe_allow_html=True)
         st.subheader("Mentions requiring attention")
@@ -519,6 +501,24 @@ def render_overview(rows: list[dict], target: str, competitor: str | None) -> No
                 render_mention(row)
         else:
             st.info("No mentions match the current filters.")
+    with topic_col:
+        st.markdown('<div class="eyebrow">Conversation drivers</div>', unsafe_allow_html=True)
+        st.subheader("Trending terms")
+        if topics:
+            topic_frame = pd.DataFrame(topics, columns=["topic", "mentions"])
+            bars = (
+                alt.Chart(topic_frame)
+                .mark_bar(color="#173b67", cornerRadiusEnd=4)
+                .encode(
+                    x=alt.X("mentions:Q", title=None),
+                    y=alt.Y("topic:N", sort="-x", title=None),
+                    tooltip=["topic:N", "mentions:Q"],
+                )
+                .properties(height=300)
+            )
+            st.altair_chart(bars, width="stretch")
+        else:
+            st.info("Not enough text to identify topics.")
 
 
 def render_mentions(rows: list[dict]) -> None:
@@ -549,7 +549,7 @@ def render_analytics(rows: list[dict], target: str) -> None:
     source_counts = frame.groupby("source").size().reset_index(name="mentions")
     source_chart = (
         alt.Chart(source_counts)
-        .mark_bar(color="#136f63", cornerRadiusEnd=5)
+        .mark_bar(color="#173b67", cornerRadiusEnd=5)
         .encode(
             x=alt.X("mentions:Q", title="Mentions"),
             y=alt.Y("source:N", sort="-x", title=None),
@@ -746,9 +746,9 @@ with download_col:
 with freshness_col:
     retention_text = (
         f"30-day history active · {len(archived_mentions)} archived mentions · "
-        "new data is collected automatically every 6 hours"
+        "new data is collected automatically every 2 hours"
         if archived_mentions
-        else "30-day history is enabled and will build automatically every 6 hours"
+        else "30-day history is enabled and will build automatically every 2 hours"
     )
     st.markdown(
         f'<div class="retention-note">✓ {safe(retention_text)}</div>',

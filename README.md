@@ -16,7 +16,7 @@ rolling 30-day archive.
 
 The repository contains a scheduled GitHub Actions workflow that:
 
-1. Collects mentions every six hours.
+1. Collects mentions every two hours.
 2. Merges them into `data/mentions.json`.
 3. Deduplicates records using stable mention IDs.
 4. Removes records older than 30 days.
