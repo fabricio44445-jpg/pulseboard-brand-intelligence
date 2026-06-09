@@ -6,7 +6,7 @@ on:
   workflow_dispatch:
 
 permissions:
-  contents: read
+  contents: write
 
 jobs:
   collect:
@@ -27,8 +27,18 @@ jobs:
 
       - name: Collect and archive mentions
         env:
-          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
-          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
           YOUTUBE_API_KEY: ${{ secrets.YOUTUBE_API_KEY }}
           TRACKED_BRANDS: ${{ vars.TRACKED_BRANDS }}
         run: python collector_job.py
+
+      - name: Commit archive updates
+        run: |
+          if git diff --quiet -- data/mentions.json; then
+            echo "No archive changes."
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/mentions.json
+          git commit -m "Update 30-day mention archive"
+          git push

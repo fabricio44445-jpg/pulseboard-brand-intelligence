@@ -1,4 +1,4 @@
-"""Live data collectors for Pulseboard.
+"""Live data collectors for ReoNeura.
 
 The collectors intentionally return plain dictionaries so Streamlit can cache
 their output without custom serializers.
@@ -20,8 +20,8 @@ from textblob import TextBlob
 
 
 USER_AGENT = (
-    "Mozilla/5.0 (compatible; Pulseboard/1.0; "
-    "+https://github.com/pulseboard-app)"
+    "Mozilla/5.0 (compatible; ReoNeura/1.0; "
+    "+https://github.com/fabricio44445-jpg/pulseboard-brand-intelligence)"
 )
 REQUEST_TIMEOUT = 15
 

@@ -1,4 +1,4 @@
-"""Pulseboard: live brand intelligence dashboard for Streamlit."""
+"""ReoNeura: live brand intelligence dashboard for Streamlit."""
 
 from __future__ import annotations
 
@@ -12,17 +12,12 @@ import altair as alt
 import pandas as pd
 import streamlit as st
 
+from archive import load_archive as load_repository_history
 from collectors import SOURCE_ICONS, collect_mentions, deduplicate
-from storage import (
-    configured as archive_configured,
-    load_mentions as load_archive_mentions,
-    prune_old_mentions,
-    upsert_mentions,
-)
 
 
 st.set_page_config(
-    page_title="Pulseboard | Brand Intelligence",
+    page_title="ReoNeura | Brand Intelligence",
     page_icon="📡",
     layout="wide",
     initial_sidebar_state="expanded",
@@ -57,13 +52,13 @@ def load_mentions(
     return collect_mentions(list(brands), list(sources), youtube_api_key)
 
 
-@st.cache_data(ttl=300, show_spinner=False)
+@st.cache_data(ttl=900, show_spinner=False)
 def load_archive(
-    url: str,
-    key: str,
     brands: tuple[str, ...],
-) -> tuple[list[dict], str | None]:
-    return load_archive_mentions(url, key, list(brands), days=30)
+    schema_version: int = 1,
+) -> list[dict]:
+    del schema_version
+    return load_repository_history(list(brands), days=30)
 
 
 def inject_styles() -> None:
@@ -96,12 +91,28 @@ def inject_styles() -> None:
           background:#f7fafb !important; color:#10212b !important;
           border-color:#9db0bb !important;
         }
+        [data-testid="stSidebar"] [data-baseweb="select"] > div *,
+        [data-testid="stSidebar"] [data-baseweb="input"] > div *,
+        [data-testid="stSidebar"] input,
+        [data-testid="stSidebar"] [role="combobox"] {
+          color:#10212b !important;
+          -webkit-text-fill-color:#10212b !important;
+          opacity:1 !important;
+        }
         [data-testid="stSidebar"] input::placeholder { color:#667885 !important; opacity:1; }
         [data-testid="stSidebar"] [data-baseweb="tag"] {
           background:#dceeea !important; border:1px solid #8dbbb4 !important;
         }
         [data-testid="stSidebar"] [data-baseweb="tag"] * { color:#084d45 !important; }
         [data-testid="stSidebar"] svg { fill:#16333d; }
+        [data-baseweb="popover"] [role="option"],
+        [data-baseweb="popover"] li {
+          background:#f9fbfc !important; color:#10212b !important;
+          -webkit-text-fill-color:#10212b !important;
+        }
+        [data-baseweb="popover"] [aria-selected="true"] {
+          background:#d5ebe7 !important; color:#064e46 !important;
+        }
         [data-testid="stSidebar"] hr { border-color:#31515e; }
         [data-testid="stSidebar"] small,
         [data-testid="stSidebar"] [data-testid="stCaptionContainer"] p {
@@ -128,7 +139,11 @@ def inject_styles() -> None:
           border:1px solid rgba(255,255,255,.22); font-size:.7rem; font-weight:800;
         }
         .mode-badge.history { background:#d8f5e9; color:#07563e; border-color:#7bc9ae; }
-        .mode-badge.live { background:#fff0d4; color:#744300; border-color:#e6b963; }
+        .retention-note {
+          min-height:2.65rem; display:flex; align-items:center; padding:.65rem .8rem;
+          border:1px solid #92bdb5; border-radius:.65rem; background:#e2f1ee;
+          color:#074c45; font-size:.78rem; font-weight:700;
+        }
         .eyebrow {
           color:var(--primary); font-size:.7rem; font-weight:800;
           letter-spacing:.13em; text-transform:uppercase; margin-bottom:.35rem;
@@ -458,7 +473,7 @@ def render_overview(rows: list[dict], target: str, competitor: str | None) -> No
           <div class="eyebrow">Evidence-backed briefing</div>
           <h3>{safe(target)} is receiving the most attention around {safe(top_topic)}.</h3>
           <p>
-            Pulseboard found <strong>{len(target_rows)} mentions</strong> in the selected
+            ReoNeura found <strong>{len(target_rows)} mentions</strong> in the selected
             period. {safe(top_source_name)} currently contributes the largest volume.
             {negative} mentions are classified as negative and deserve manual review.
             Seven-day volume is {safe(volume_change.lower())}. Automated sentiment is
@@ -575,7 +590,7 @@ def render_analytics(rows: list[dict], target: str) -> None:
 def render_source_health(statuses: list[dict]) -> None:
     st.markdown('<div class="eyebrow">Collection diagnostics</div>', unsafe_allow_html=True)
     st.header("Source health")
-    st.caption("Failures are shown explicitly; Pulseboard never silently drops a source.")
+    st.caption("Failures are shown explicitly; ReoNeura never silently drops a source.")
     if not statuses:
         st.info("No source checks have run.")
         return
@@ -601,7 +616,7 @@ if "brands" not in st.session_state:
     st.session_state.brands = DEFAULT_BRANDS.copy()
 
 with st.sidebar:
-    st.markdown("## ◉ Pulseboard")
+    st.markdown("## ◉ ReoNeura")
     st.caption("Brand intelligence workspace")
     target_brand = st.selectbox("Primary brand", st.session_state.brands)
     competitor_options = ["None"] + [
@@ -652,43 +667,22 @@ with st.spinner("Collecting live mentions…"):
         2,
     )
 
-supabase_url = secret("SUPABASE_URL")
-supabase_key = secret("SUPABASE_SERVICE_ROLE_KEY")
-history_enabled = archive_configured(supabase_url, supabase_key)
-archive_message = ""
-
-if history_enabled:
-    stored_count, store_error = upsert_mentions(
-        supabase_url,
-        supabase_key,
-        live_mentions,
-    )
-    prune_error = prune_old_mentions(supabase_url, supabase_key, days=30)
-    archived_mentions, load_error = load_archive(
-        supabase_url,
-        supabase_key,
-        tuple(brands_to_fetch),
-    )
-    archive_error = store_error or load_error or prune_error
-    if archive_error:
-        archive_message = f"Archive error: {archive_error}"
-        mentions = live_mentions
-        history_enabled = False
-    else:
-        mentions = deduplicate(archived_mentions + live_mentions)
-        archive_message = f"{stored_count} live rows synchronized"
-else:
-    session_rows = st.session_state.get("session_archive", [])
-    mentions = deduplicate(session_rows + live_mentions)
-    st.session_state.session_archive = mentions
-    archive_message = "Add Supabase secrets for durable 30-day history"
+archived_mentions = load_archive(tuple(brands_to_fetch), 1)
+session_rows = st.session_state.get("session_archive", [])
+mentions = deduplicate(archived_mentions + session_rows + live_mentions)
+st.session_state.session_archive = mentions
+archive_message = (
+    f"{len(archived_mentions)} retained mentions loaded"
+    if archived_mentions
+    else "Archive enabled; history begins with the next scheduled collection"
+)
 
 source_statuses.append(
     {
         "brand": "Workspace",
         "source": "30-day archive",
         "count": len(mentions),
-        "ok": history_enabled,
+        "ok": True,
         "message": archive_message,
     }
 )
@@ -714,11 +708,7 @@ latest_collection = max(
     ),
     default=datetime.now(timezone.utc),
 )
-history_badge = (
-    '<span class="mode-badge history">● 30-day archive active</span>'
-    if history_enabled
-    else '<span class="mode-badge live">● Live-feed mode</span>'
-)
+history_badge = '<span class="mode-badge history">● 30-day history enabled</span>'
 youtube_badge = (
     '<span class="mode-badge">YouTube connected</span>'
     if secret("YOUTUBE_API_KEY")
@@ -754,17 +744,16 @@ with download_col:
         width="stretch",
     )
 with freshness_col:
-    if history_enabled:
-        st.success(
-            "Accumulation is active. New mentions are deduplicated and retained for 30 days.",
-            icon=":material/check_circle:",
-        )
-    else:
-        st.warning(
-            "Current feeds are live, but history is only retained for this session. "
-            "Configure Supabase to accumulate a full month.",
-            icon=":material/warning:",
-        )
+    retention_text = (
+        f"30-day history active · {len(archived_mentions)} archived mentions · "
+        "new data is collected automatically every 6 hours"
+        if archived_mentions
+        else "30-day history is enabled and will build automatically every 6 hours"
+    )
+    st.markdown(
+        f'<div class="retention-note">✓ {safe(retention_text)}</div>',
+        unsafe_allow_html=True,
+    )
 
 overview_tab, mentions_tab, analytics_tab, health_tab = st.tabs(
     ["Overview", "Mentions", "Analytics", "Source health"]

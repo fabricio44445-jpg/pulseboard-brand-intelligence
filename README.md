@@ -1,8 +1,8 @@
-# Pulseboard
+# ReoNeura
 
-Pulseboard is a live brand-intelligence dashboard built for Streamlit. It
-collects public mentions, normalizes them, estimates sentiment, compares brands,
-and links every conclusion back to its source.
+ReoNeura is a live brand-intelligence workspace built with Streamlit. It
+collects public mentions, estimates sentiment, compares brands, and preserves a
+rolling 30-day archive.
 
 ## Live sources
 
@@ -12,79 +12,59 @@ and links every conclusion back to its source.
 - Selected technology publication RSS feeds
 - YouTube Data API v3 when a key is configured
 
-Source failures appear in the **Source health** tab instead of being silently
-ignored.
+## 30-day retention
+
+The repository contains a scheduled GitHub Actions workflow that:
+
+1. Collects mentions every six hours.
+2. Merges them into `data/mentions.json`.
+3. Deduplicates records using stable mention IDs.
+4. Removes records older than 30 days.
+5. Commits the updated archive to the repository.
+
+No external database is required. Public mention metadata is stored in the
+public repository.
+
+To start an immediate collection, open the GitHub repository and select:
+
+**Actions → Collect brand mentions → Run workflow**
+
+The workflow tracks `Reolink,Arlo,Eufy` by default. Set the optional repository
+variable `TRACKED_BRANDS` to a comma-separated list to change the scheduled
+brands.
 
 ## Run locally
 
 ```bash
-cd brand-intelligence-hub
 python3 -m streamlit run streamlit_app.py
 ```
 
 Open `http://localhost:8501`.
 
-### Enable YouTube
+## Enable YouTube
 
-Create `.streamlit/secrets.toml`:
+Create `.streamlit/secrets.toml` locally or add this value to Streamlit
+Community Cloud secrets:
 
 ```toml
 YOUTUBE_API_KEY = "your-key"
 ```
 
-The key requires **YouTube Data API v3** access in Google Cloud Console. Do not
-commit the real secrets file.
+Add the same `YOUTUBE_API_KEY` as a GitHub Actions repository secret so
+scheduled collection includes YouTube. Never commit the real key.
 
-## Deploy from GitHub to Streamlit Community Cloud
+## Deploy
 
-1. Create a GitHub repository and push this folder.
-2. Sign in at <https://share.streamlit.io>.
-3. Select **Create app** and choose the GitHub repository.
-4. Set the entrypoint to `streamlit_app.py`.
-5. Open **App settings → Secrets** and add:
+Deploy from:
 
-   ```toml
-   YOUTUBE_API_KEY = "your-key"
-   ```
+- Repository: `fabricio44445-jpg/pulseboard-brand-intelligence`
+- Branch: `main`
+- Entrypoint: `streamlit_app.py`
 
-6. Deploy.
-
-`requirements.txt` and `.streamlit/config.toml` are already configured.
 The dependency set supports Streamlit Community Cloud's Python 3.14 runtime.
 
-## Storage note
+## Notes
 
-Streamlit Community Cloud does not provide durable local application storage.
-Without Supabase, Pulseboard fetches live data and uses a 15-minute cache plus
-temporary session history. The interface labels this clearly as **Live-feed
-mode**.
-
-### Enable accumulated 30-day history
-
-1. Create a Supabase project.
-2. Open **SQL Editor** and run `supabase_schema.sql`.
-3. Copy the project URL and service-role key.
-4. Add these values to Streamlit **App settings → Secrets**:
-
-   ```toml
-   SUPABASE_URL = "https://your-project.supabase.co"
-   SUPABASE_SERVICE_ROLE_KEY = "your-service-role-key"
-   ```
-
-5. In the GitHub repository, open **Settings → Secrets and variables →
-   Actions** and create secrets with the same names.
-6. Optionally add `YOUTUBE_API_KEY` in both Streamlit and GitHub Actions.
-7. Run **Actions → Collect brand mentions → Run workflow** once.
-
-The included GitHub Actions workflow runs every six hours, upserts mentions by
-stable ID, and deletes rows older than 30 days. This continues collecting even
-when the Streamlit app is asleep.
-
-The service-role key must remain secret. It is only used by the server-side app
-and GitHub Actions and must never be committed or exposed in browser code.
-
-## Responsible collection
-
-Pulseboard uses public feeds and official APIs. Availability, indexing, and
-rate limits vary by source. Review each platform's terms before expanding the
-collector or storing full content.
+Sentiment is automated and directional. Open the supporting source before
+making a response or reputation decision. Feed availability and indexing vary
+by platform.

@@ -5,17 +5,11 @@ from __future__ import annotations
 import os
 import sys
 
+from archive import load_archive, save_archive
 from collectors import collect_mentions
-from storage import prune_old_mentions, upsert_mentions
 
 
 def main() -> int:
-    supabase_url = os.getenv("SUPABASE_URL")
-    supabase_key = os.getenv("SUPABASE_SERVICE_ROLE_KEY")
-    if not supabase_url or not supabase_key:
-        print("SUPABASE_URL and SUPABASE_SERVICE_ROLE_KEY are required.")
-        return 2
-
     brand_config = os.getenv("TRACKED_BRANDS") or "Reolink,Arlo,Eufy"
     brands = [
         brand.strip()
@@ -35,17 +29,9 @@ def main() -> int:
             f"{status['count']} ({status['message']})"
         )
 
-    stored, error = upsert_mentions(supabase_url, supabase_key, rows)
-    if error:
-        print(f"Archive write failed: {error}")
-        return 1
-
-    prune_error = prune_old_mentions(supabase_url, supabase_key, days=30)
-    if prune_error:
-        print(f"Archive cleanup failed: {prune_error}")
-        return 1
-
-    print(f"Stored or refreshed {stored} mentions for {len(brands)} brands.")
+    existing = load_archive(days=30)
+    stored = save_archive(existing + rows, days=30)
+    print(f"Archive now contains {stored} mentions for the last 30 days.")
     return 0
 
 
