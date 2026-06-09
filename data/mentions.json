@@ -925,6 +925,20 @@
   },
   {
     "author": "Google News",
+    "brand": "Arlo",
+    "collected_at": "2026-06-09T02:10:38.893997+00:00",
+    "id": "ff6e166f7ebb9413668e53239ae50336ad2aeb768baf9f7a1a772409f71dd205",
+    "link": "https://news.google.com/rss/articles/CBMilAFBVV95cUxQb1BuN1hPQk9weGpkbjZxT0d4RWxWZUZ2eDVPUVZjaVVvTEo0WXpxZU41VXJ5czFsaUlvSjhYLTl1YW1KVWI0aVc1OUYzaE05cWJDU0RkNUwxbTlMYlFtanF4bHhST05tU2JYeVYwOWJyLVVjeEV0X01VV2lnM1NUdGE2bmREMnBDVFV2N2lPdVNobDdP?oc=5",
+    "published_at": "2026-06-06T11:31:46+00:00",
+    "publisher": "Google News",
+    "sentiment": "Neutral",
+    "sentiment_score": 0.0,
+    "source": "Google News",
+    "summary": "Arlo and Janis by Jimmy Johnson MSN",
+    "title": "Arlo and Janis by Jimmy Johnson - MSN"
+  },
+  {
+    "author": "Google News",
     "brand": "Eufy",
     "collected_at": "2026-06-09T02:08:20.911712+00:00",
     "id": "bf535d6b6a78ed5d09cebe44149ba8db6234ad515bd2a122768053c4c4553158",
@@ -950,6 +964,20 @@
     "source": "Google News",
     "summary": "The Eufy C28 robot vacuum $250 cheaper ahead of Prime Day Dailyhunt",
     "title": "The Eufy C28 robot vacuum $250 cheaper ahead of Prime Day - Dailyhunt"
+  },
+  {
+    "author": "Google News",
+    "brand": "Arlo",
+    "collected_at": "2026-06-09T02:10:38.896748+00:00",
+    "id": "c93f52f49f907f58d40beacc98275e7f8e2fbac5adbce0544b7f6b4cd06b72b8",
+    "link": "https://news.google.com/rss/articles/CBMiqwJBVV95cUxOcnZBVWh0NEk4QTBTc2VTMkcza1ZRTGNXN09XM0tRMnplZkJtT1dnSTVOa25rdy1oemJxMTk1d0c1OWFzWEoyb3hFeE14ZXoxN0w4VmJmMFJpblNPNjJyRFNRLXBPUHYtZkU4c3UwX1ViUzBqZi1MSHNfTDhwZnRwdE1wX3czbFBwbll5bTF3bFRQbm83UnBqYnpyc0JjZUJma2s4YklRbkJDX0l0Ml9MWGE1MWFJczJTd1JrNDN0QVVpcG9uLXBRSDN4ZDNWWXdLbnZpbnFOd1VOVXMxM0gwdXNuYWlmX2lvMGx0cHFTdmsxQXJ0VmkzSXNUTklxWk5hYVhpUlFKZDY4c2RNaUR3T2VTQTAwZHAwZDhlWERuUTdLeFlBMGZGVjBabw?oc=5",
+    "published_at": "2026-06-06T03:33:06+00:00",
+    "publisher": "Google News",
+    "sentiment": "Neutral",
+    "sentiment_score": 0.0,
+    "source": "Google News",
+    "summary": "Arlo and Janis by Jimmy Johnson MSN",
+    "title": "Arlo and Janis by Jimmy Johnson - MSN"
   },
   {
     "author": "Google News",
@@ -1111,6 +1139,20 @@
     "collected_at": "2026-06-09T02:08:20.909986+00:00",
     "id": "7dd347568d67b691ab5c0cea4d8aa06f6af71ad94d2440a495bdc15b4d20a5e1",
     "link": "https://news.google.com/rss/articles/CBMixgJBVV95cUxNM19XS1NBQzlNckdnLXZKNEpqQWswTmhjcW5xVlpOdjZUN3Y0MG15alVSb3gxTEdpdEF6NUJNRFBpVWtnNm5VOUFFSkw1cnExdUFsZWpjN3ZPeDl4V0VpRi1CcjFBZFBwZDNOOUZiTUsteXlWYmh2UFRpUTc0RjE0SEt4TnJieU5XSllOUFNGblRESVhNZXFGRHRXRVFUMUd6anBBRUxkOUlxUk8zSVU0YTVWRWZDTjAzQU4xb2FUN0VDWTZVN2VpS3NSQkpwVVp1N2h1MjM2SndOcEY2NHhuTXludW94SU1fRDJRcWhLM3JPbmh2OXczZ0VIMTBueHpwaUlndk9wNGozM0JMcmlmYTk5ZURKa0lwaVRfTUtXWFFsRG54V3R6RF9SZ1UxUFlzWEl2X0lyczRXMHNXWldUcXotSGRDQQ?oc=5",
+    "published_at": "2026-06-05T09:12:53+00:00",
+    "publisher": "Google News",
+    "sentiment": "Neutral",
+    "sentiment_score": -0.008,
+    "source": "Google News",
+    "summary": "The Eufy C28 robot vacuum $250 cheaper ahead of Prime Day MSN",
+    "title": "The Eufy C28 robot vacuum $250 cheaper ahead of Prime Day - MSN"
+  },
+  {
+    "author": "Google News",
+    "brand": "Eufy",
+    "collected_at": "2026-06-09T02:10:42.759849+00:00",
+    "id": "b68de87af5dfe002dc763912f26a46614a5e9cc204f25c08fe969000fc79128d",
+    "link": "https://news.google.com/rss/articles/CBMiswFBVV95cUxOQVQzQjU5MVhkUXVBbGFKeGMteFd5M1IyV19aZjlWTVVISFl4Qkt4bk9nVWNqaXFVZUJ1Vjg4eXhLNWZTN0tUbjY4b3pSTDRDZ2VRcjFIWUx5c2htbFhxV04xenhGSWJfaVBHMndkUTV4RVpsV1RLWE1tTFVSMDJpNEpiQ3FjTDROa3luS2hLWXNEWEpZV3lESXRJMXZBNnNvNTNhZFJXcjBtY2RDdm5sbU1Pcw?oc=5",
     "published_at": "2026-06-05T09:12:53+00:00",
     "publisher": "Google News",
     "sentiment": "Neutral",
@@ -1300,6 +1342,20 @@
     "source": "Google News",
     "summary": "Anker's Eufy Genie is a $35 Amazon Echo Dot clone Mashable",
     "title": "Anker's Eufy Genie is a $35 Amazon Echo Dot clone - Mashable"
+  },
+  {
+    "author": "Google News",
+    "brand": "Arlo",
+    "collected_at": "2026-06-09T02:10:38.887199+00:00",
+    "id": "cf176c835043a7621a771fd7d1da888323300cf3e546d01e428a0a48ecf3c3e6",
+    "link": "https://news.google.com/rss/articles/CBMibkFVX3lxTE53RjlUYW1vc3RWUzNjTVUtSjRVVEFoUVRzSXBrQ0h2RmhKbnBRVEsyZzdPTWVMQUlmX3IzQXo1UXFEZ0txaWFmU0dHd3BvVzJpaW80UThoWEd5alpwdkd5Vl84eHduV052S3Z5bVlB?oc=5",
+    "published_at": "2026-06-04T09:00:00+00:00",
+    "publisher": "Google News",
+    "sentiment": "Positive",
+    "sentiment_score": 1.0,
+    "source": "Google News",
+    "summary": "Best Amazon home security deal: Save $70 on the Arlo Video Doorbell Mashable",
+    "title": "Best Amazon home security deal: Save $70 on the Arlo Video Doorbell - Mashable"
   },
   {
     "author": "Google News",
@@ -2185,6 +2241,20 @@
   },
   {
     "author": "Google News",
+    "brand": "Eufy",
+    "collected_at": "2026-06-09T02:10:42.763866+00:00",
+    "id": "11222a6d4365dcd1eb59b5d0a7abac1634047f79cf556a3a0adcf38d7a43247f",
+    "link": "https://news.google.com/rss/articles/CBMilAFBVV95cUxOM0hhTGs4RFo2Y3VHZDZ6OE9sMUFXcDY0b216a1BRenhiR0VnakdkYS1nRjluT184UTdpamdoYUVURUUzVjJZejliQTNmWHl1MUdfLXNYNWhPRTNjN0IwX0FlNTZtLXhfSHRQMWc0cEthZ29qaHliMVMzLS1aQ2hfVngyM2Y3WExnakladEZIU2Y4Tkot?oc=5",
+    "published_at": "2026-05-27T07:00:00+00:00",
+    "publisher": "Google News",
+    "sentiment": "Neutral",
+    "sentiment_score": 0.0,
+    "source": "Google News",
+    "summary": "Why I chose Eufy over Ring and Nest MSN",
+    "title": "Why I chose Eufy over Ring and Nest - MSN"
+  },
+  {
+    "author": "Google News",
     "brand": "Arlo",
     "collected_at": "2026-06-09T02:08:10.007116+00:00",
     "id": "44b628454ba283dc691bef17204f58296c4000f7d4cb5c970586e62eb12a4b15",
@@ -2368,6 +2438,20 @@
   {
     "author": "Google News",
     "brand": "Arlo",
+    "collected_at": "2026-06-09T02:10:38.886481+00:00",
+    "id": "cd607c03e1c96c9a5fba93d088fb884b4363b7fe0bd9af2e7fa82de55c131cf9",
+    "link": "https://news.google.com/rss/articles/CBMiW0FVX3lxTFBUTldSWk1OUEQ1OWtNdWQxUGRhTEF4TkRhSTR1REZTR1d4Zjg0VTBuMElmNmZwVzMySWZLTXZCdEpqd1EtYmtJcFZ0em44bnFQNmdkNXV1bDhOckE?oc=5",
+    "published_at": "2026-05-24T07:00:00+00:00",
+    "publisher": "Google News",
+    "sentiment": "Neutral",
+    "sentiment_score": 0.0,
+    "source": "Google News",
+    "summary": "Beef Up Your Home's Security for as Low as $16 With Arlo's Memorial Day Weekend Deals CNET",
+    "title": "Beef Up Your Home's Security for as Low as $16 With Arlo's Memorial Day Weekend Deals - CNET"
+  },
+  {
+    "author": "Google News",
+    "brand": "Arlo",
     "collected_at": "2026-06-09T02:08:10.002717+00:00",
     "id": "582e558da6a2c87ad6cf83ab9aad9688c393e12c941b716995d4667537485dea",
     "link": "https://news.google.com/rss/articles/CBMirgFBVV95cUxONVpveGVpWHZoZG1SbmlfRkFvckkxbE8wNFo0Vkx0NXZhVDVPaWFmRGdvUmp0NTRfYWctTE5fWmdjM0hkUkpFeTh6aUsxSE5hOFlPazQ5MzNHb3NuRnJXaWZoT3ZyaGJ5Q2dqOEh2RXBvV0tTQkVSZ3l4RTFiYXBKcGxsODd6UWRwN2dPVlFuMWpsMlZFVXlJMDB2d044RmwzLTNINXVHd094WUc5Wmc?oc=5",
@@ -2378,6 +2462,20 @@
     "source": "Google News",
     "summary": "Insight Enterprises and Arlo Technologies Shares Are Soaring, What You Need To Know Yahoo Finance",
     "title": "Insight Enterprises and Arlo Technologies Shares Are Soaring, What You Need To Know - Yahoo Finance"
+  },
+  {
+    "author": "Google News",
+    "brand": "Eufy",
+    "collected_at": "2026-06-09T02:10:42.761217+00:00",
+    "id": "b75a94890c53d0fd15ae2e2e4b61d2602f0a2f00864cf3f128ca139de1cf8c77",
+    "link": "https://news.google.com/rss/articles/CBMi0gFBVV95cUxQRi1XRVAwWVo0QmhDRF9tbURPbzB2TGhEeVFwVi1jOWVJaVdnMk1Ob3JqUnFHRHZsSlpkZFVIZUpiZENJdW1BQmsydTlUZ0FFRHBGNGRUT0w4NGFncDc3aG51WGVCOG5IelhKcDZ4WEMySUhUWkY4WFYtWnJvVnZjMEx5YS1SSV9JOG9pMk5zS0t0ZS03Zlczd3gwWDZyUFNLWi1qMENacGN2S19aRHJ5WDR2ajUxZGctVGJmRk5rNjFLM0VnRTRnLTg2Ym9JZy1icnc?oc=5",
+    "published_at": "2026-05-22T15:40:56+00:00",
+    "publisher": "Google News",
+    "sentiment": "Positive",
+    "sentiment_score": 0.175,
+    "source": "Google News",
+    "summary": "Eufy announces new AI-powered smart home security platform with no monthly fees MSN",
+    "title": "Eufy announces new AI-powered smart home security platform with no monthly fees - MSN"
   },
   {
     "author": "Google News",
@@ -3106,6 +3204,20 @@
     "source": "Google News",
     "summary": "Get 2K Clarity, Dual-Camera Security and Over $100 Off With the Eufy E340 Bundle CNET",
     "title": "Get 2K Clarity, Dual-Camera Security and Over $100 Off With the Eufy E340 Bundle - CNET"
+  },
+  {
+    "author": "Google News",
+    "brand": "Arlo",
+    "collected_at": "2026-06-09T02:10:38.888947+00:00",
+    "id": "1d817146e7dbaf94037c4e771c0dbb81e9061b8ae17863df2af911ac5f693ca7",
+    "link": "https://news.google.com/rss/articles/CBMiqAFBVV95cUxQNnNPR3hqYktiYUllZTh3OUZnanVreE1WSEVDVzZhN1Q3M1U2RDZTQWdyMXRTWFVhMHZ4MFVES1d1OE1UWmc0djY4NHhuOTR0QVlWQ1ZtdDUtTkNEQVROQ3IxRzdKRFQ3UnRKeHQ5SW9DbF9QSWdwcVJuaUg5VHFncEpmR0UtVnpHNjZoa1pjVHJZMXpXbkZaUnNlYWk2R0MyNklXUVhPZUQ?oc=5",
+    "published_at": "2026-05-11T07:00:00+00:00",
+    "publisher": "Google News",
+    "sentiment": "Neutral",
+    "sentiment_score": 0.0,
+    "source": "Google News",
+    "summary": "Arlo Technologies, Inc. 2026 Q1 - Results - Earnings Call Presentation (NYSE:ARLO) 2026-05-11 Seeking Alpha",
+    "title": "Arlo Technologies, Inc. 2026 Q1 - Results - Earnings Call Presentation (NYSE:ARLO) 2026-05-11 - Seeking Alpha"
   },
   {
     "author": "Google News",
