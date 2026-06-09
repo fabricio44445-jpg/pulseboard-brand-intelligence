@@ -6,7 +6,7 @@ import os
 import sys
 
 from archive import load_archive, save_archive
-from collectors import collect_mentions
+from collectors import brand_is_relevant, collect_mentions, sentiment_for
 
 
 def main() -> int:
@@ -30,7 +30,26 @@ def main() -> int:
         )
 
     existing = load_archive(days=30)
-    stored = save_archive(existing + rows, days=30)
+    reclassified = []
+    for row in existing + rows:
+        searchable = f"{row['title']} {row['summary']}"
+        if not brand_is_relevant(row["brand"], searchable):
+            continue
+        sentiment, score, confidence, reason = sentiment_for(
+            row["title"],
+            row["summary"],
+        )
+        row.update(
+            {
+                "sentiment": sentiment,
+                "sentiment_score": score,
+                "sentiment_confidence": confidence,
+                "sentiment_reason": reason,
+            }
+        )
+        reclassified.append(row)
+
+    stored = save_archive(reclassified, days=30)
     print(f"Archive now contains {stored} mentions for the last 30 days.")
     return 0
 

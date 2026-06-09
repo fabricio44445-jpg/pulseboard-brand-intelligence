@@ -29,6 +29,11 @@ def _deserialize(row: dict[str, Any]) -> dict[str, Any]:
             str(value).replace("Z", "+00:00")
         ).astimezone(timezone.utc)
     parsed["sentiment_score"] = float(parsed.get("sentiment_score", 0))
+    parsed["sentiment_confidence"] = parsed.get("sentiment_confidence", "Low")
+    parsed["sentiment_reason"] = parsed.get(
+        "sentiment_reason",
+        "Legacy classification; pending scheduled refresh",
+    )
     return parsed
 
 

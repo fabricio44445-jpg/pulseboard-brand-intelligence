@@ -308,6 +308,8 @@ def metric_card(
 
 def render_mention(row: dict) -> None:
     summary = row["summary"] or "No summary supplied by this source."
+    confidence = row.get("sentiment_confidence", "Low")
+    reason = row.get("sentiment_reason", "Automated text classification")
     st.markdown(
         f"""
         <div class="mention-card">
@@ -319,7 +321,7 @@ def render_mention(row: dict) -> None:
           <div class="mention-summary">{safe(summary[:300])}</div>
           <div class="mention-meta">
             {safe(row["author"])} · {safe(relative_time(row["published_at"]))} ·
-            sentiment {row["sentiment_score"]:+.2f}
+            {safe(confidence)} confidence · {safe(reason)}
           </div>
         </div>
         """,
@@ -585,6 +587,14 @@ def render_analytics(rows: list[dict], target: str) -> None:
     with second:
         st.subheader("Sentiment by source")
         st.altair_chart(sentiment_chart, width="stretch")
+
+    st.info(
+        "Sentiment is based on explicit product praise, value/deal language, "
+        "complaints, failures, solution phrases, and negation. Unclear or mixed "
+        "language is classified as neutral. Confidence and the strongest reason "
+        "are shown on each mention.",
+        icon=":material/info:",
+    )
 
 
 def render_source_health(statuses: list[dict]) -> None:

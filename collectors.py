@@ -37,6 +37,93 @@ PUBLICATION_FEEDS = {
     "Les Numériques": "https://www.lesnumeriques.com/rss.xml",
 }
 
+POSITIVE_PHRASES = {
+    "best ever": 2.5,
+    "best-ever": 2.5,
+    "bargain price": 2.2,
+    "great value": 2.2,
+    "works well": 2.0,
+    "working perfectly": 2.5,
+    "finally got": 1.5,
+    "highly recommend": 2.5,
+    "no subscription": 1.8,
+    "without a subscription": 1.8,
+    "local storage": 0.8,
+    "privacy focus": 1.4,
+    "strong privacy": 1.5,
+    "market leadership": 1.5,
+    "half off": 2.0,
+    "price drop": 1.5,
+    "save $": 1.8,
+    "$ off": 1.8,
+    "solved": 2.0,
+    "fixed": 2.0,
+    "improves": 1.4,
+    "improved": 1.4,
+    "upgrade": 0.8,
+    "pro-level": 1.5,
+    "outperformance": 1.5,
+}
+
+NEGATIVE_PHRASES = {
+    "does not work": -2.8,
+    "doesn't work": -2.8,
+    "not working": -2.8,
+    "will not": -2.0,
+    "won't": -2.0,
+    "cannot connect": -2.5,
+    "can't connect": -2.5,
+    "cannot set up": -2.5,
+    "can't set up": -2.5,
+    "unable to": -2.2,
+    "keeps failing": -2.8,
+    "stopped working": -3.0,
+    "too expensive": -1.8,
+    "hate": -2.0,
+    "poor quality": -2.5,
+    "unusable": -2.8,
+    "overheat": -2.2,
+    "delayed alert": -2.0,
+    "false alert": -1.8,
+    "subscription price": -1.2,
+    "price increase": -1.6,
+    "trade down": -1.0,
+    "stock is down": -1.8,
+    "never comment": -1.6,
+    "loud popping": -1.8,
+}
+
+POSITIVE_WORDS = {
+    "amazing", "bargain", "best", "better", "excellent", "fast", "favorite",
+    "great", "impressive", "love", "perfect", "reliable", "recommend",
+    "smooth", "strong", "success", "successful", "useful", "value",
+}
+
+NEGATIVE_WORDS = {
+    "bad", "broken", "bug", "bugs", "complaint", "difficult", "disappointed",
+    "debacle", "disconnect", "error", "expensive", "fail", "failed", "fails",
+    "failing", "failure",
+    "frustrating", "hate", "issue", "issues", "overheating", "poor", "problem",
+    "problems", "slow", "stopped", "unreliable", "unusable", "worse", "worst",
+}
+
+SOLUTION_PHRASES = {
+    "end security blind spots",
+    "eliminate blind spots",
+    "prevent break-ins",
+    "fix the issue",
+    "fixes the issue",
+    "solve the problem",
+    "solves the problem",
+}
+
+ARLO_DOMAIN_TERMS = {
+    "camera", "cameras", "security", "doorbell", "wifi", "wi-fi",
+    "subscription", "motion", "alert", "base station",
+    "stock", "shares", "earnings", "nasdaq", "nyse", "company", "technologies",
+    "privacy", "service plan", "outdoor", "indoor",
+}
+
 
 def clean_text(value: Any) -> str:
     """Strip markup and normalize whitespace from external text."""
@@ -63,7 +150,12 @@ def mention_id(brand: str, link: str, title: str) -> str:
 def brand_is_relevant(brand: str, text: str) -> bool:
     """Require the complete brand phrase rather than loose substring matches."""
     phrase = re.escape(brand.strip())
-    return bool(re.search(rf"(?<!\w){phrase}(?!\w)", text, flags=re.IGNORECASE))
+    if not re.search(rf"(?<!\w){phrase}(?!\w)", text, flags=re.IGNORECASE):
+        return False
+    if brand.casefold() == "arlo":
+        normalized = text.casefold()
+        return any(term in normalized for term in ARLO_DOMAIN_TERMS)
+    return True
 
 
 def parse_datetime(entry: dict[str, Any]) -> datetime:
@@ -84,14 +176,98 @@ def parse_datetime(entry: dict[str, Any]) -> datetime:
     return datetime.now(timezone.utc)
 
 
-def sentiment_for(text: str) -> tuple[str, float]:
-    """Classify title/summary sentiment using TextBlob polarity."""
-    score = round(float(TextBlob(text).sentiment.polarity), 3)
-    if score > 0.15:
-        return "Positive", score
-    if score < -0.15:
-        return "Negative", score
-    return "Neutral", score
+def _signal_score(text: str) -> tuple[float, list[str], list[str]]:
+    normalized = text.casefold().replace("’", "'")
+    positive_hits: list[str] = []
+    negative_hits: list[str] = []
+    score = 0.0
+
+    for phrase, weight in POSITIVE_PHRASES.items():
+        if phrase in normalized:
+            score += weight
+            positive_hits.append(phrase)
+    for phrase, weight in NEGATIVE_PHRASES.items():
+        if phrase in normalized:
+            score += weight
+            negative_hits.append(phrase)
+    for phrase in SOLUTION_PHRASES:
+        if phrase in normalized:
+            score += 2.2
+            positive_hits.append(phrase)
+    if re.search(r"\$\s?\d+(?:\.\d+)?\s+off\b", normalized):
+        score += 1.8
+        positive_hits.append("cash discount")
+    if re.search(r"\b\d{1,2}%\s+off\b", normalized):
+        score += 1.8
+        positive_hits.append("percentage discount")
+
+    words = re.findall(r"[a-z][a-z'-]+", normalized)
+    for index, word in enumerate(words):
+        previous = words[max(0, index - 2) : index]
+        negated = any(token in {"not", "never", "no", "hardly"} for token in previous)
+        if word in POSITIVE_WORDS:
+            score += -1.0 if negated else 1.0
+            (negative_hits if negated else positive_hits).append(
+                f"{'not ' if negated else ''}{word}"
+            )
+        elif word in NEGATIVE_WORDS:
+            score += 1.0 if negated else -1.0
+            (positive_hits if negated else negative_hits).append(
+                f"{'not ' if negated else ''}{word}"
+            )
+    return score, positive_hits, negative_hits
+
+
+def sentiment_for(
+    title: str,
+    summary: str = "",
+) -> tuple[str, float, str, str]:
+    """Return brand sentiment, normalized score, confidence, and explanation."""
+    normalized_title = title.casefold().replace("’", "'")
+    title_score, title_positive, title_negative = _signal_score(title)
+    summary_score, summary_positive, summary_negative = _signal_score(summary[:700])
+
+    explicit_score = title_score + (summary_score * 0.35)
+    positive_hits = title_positive + summary_positive[:3]
+    negative_hits = title_negative + summary_negative[:3]
+    signal_count = len(positive_hits) + len(negative_hits)
+    strong_positive = (
+        any(phrase in normalized_title for phrase in POSITIVE_PHRASES)
+        or any(phrase in normalized_title for phrase in SOLUTION_PHRASES)
+        or bool(re.search(r"\$\s?\d+(?:\.\d+)?\s+off\b", normalized_title))
+        or bool(re.search(r"\b\d{1,2}%\s+off\b", normalized_title))
+    )
+
+    if signal_count == 0:
+        return "Neutral", 0.0, "Low", "No clear praise or complaint language"
+
+    # TextBlob is retained only as a small tie-breaker, not the main classifier.
+    blob_score = float(TextBlob(f"{title}. {summary[:350]}").sentiment.polarity)
+    combined = explicit_score + (blob_score * 0.2)
+    normalized_score = round(max(-1.0, min(1.0, combined / 3.0)), 3)
+
+    if (
+        combined > 0
+        and not strong_positive
+        and (
+            "?" in title
+            or normalized_title.startswith("best ")
+            or normalized_title.startswith("looking for ")
+            or "recommendations" in normalized_title
+        )
+    ):
+        return "Neutral", normalized_score, "Low", "Question or recommendation request"
+    if positive_hits and negative_hits and abs(combined) < 1.4:
+        return "Neutral", normalized_score, "Medium", "Mixed positive and negative signals"
+    if combined >= 0.75:
+        reason = f"Positive signal: {positive_hits[0]}"
+        confidence = "High" if combined >= 2.0 or signal_count >= 3 else "Medium"
+        return "Positive", normalized_score, confidence, reason
+    if combined <= -0.75:
+        reason = f"Negative signal: {negative_hits[0]}"
+        confidence = "High" if combined <= -2.0 or signal_count >= 3 else "Medium"
+        return "Negative", normalized_score, confidence, reason
+    return "Neutral", normalized_score, "Low", "Weak or ambiguous opinion signals"
 
 
 def entry_to_mention(
@@ -107,7 +283,7 @@ def entry_to_mention(
         return None
 
     summary = clean_text(entry.get("summary") or entry.get("description"))
-    sentiment, score = sentiment_for(f"{title}. {summary[:500]}")
+    sentiment, score, confidence, reason = sentiment_for(title, summary)
     collected_at = datetime.now(timezone.utc)
     return {
         "id": mention_id(brand, link, title),
@@ -121,6 +297,8 @@ def entry_to_mention(
         "published_at": parse_datetime(entry),
         "sentiment": sentiment,
         "sentiment_score": score,
+        "sentiment_confidence": confidence,
+        "sentiment_reason": reason,
         "collected_at": collected_at,
     }
 
@@ -248,7 +426,7 @@ def fetch_youtube(
                 continue
             title = clean_text(snippet.get("title"))
             summary = clean_text(snippet.get("description"))
-            sentiment, score = sentiment_for(f"{title}. {summary}")
+            sentiment, score, confidence, reason = sentiment_for(title, summary)
             published = str(snippet.get("publishedAt") or "")
             try:
                 published_at = datetime.fromisoformat(published.replace("Z", "+00:00"))
@@ -271,6 +449,8 @@ def fetch_youtube(
                     "published_at": published_at.astimezone(timezone.utc),
                     "sentiment": sentiment,
                     "sentiment_score": score,
+                    "sentiment_confidence": confidence,
+                    "sentiment_reason": reason,
                     "collected_at": datetime.now(timezone.utc),
                 }
             )
